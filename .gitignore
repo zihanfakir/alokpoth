@@ -1,0 +1,14 @@
+# Temporary screenshots & verification artifacts
+screenshot*.png
+test-*.png
+*.log
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor files
+.vscode/
+.idea/

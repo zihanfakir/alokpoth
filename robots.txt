@@ -1,0 +1,24 @@
+# Robots.txt for Alokpoth (https://alokpoth.zihan.uk)
+# Privacy by Default Sovereign AI (Alora)
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /auth/
+Disallow: /keys/
+
+# Googlebot specific rules
+User-agent: Googlebot
+Allow: /
+Allow: /assets/
+Allow: /assets/*.png
+Allow: /assets/*.jpg
+Allow: /assets/*.svg
+Allow: /downloads/
+
+# Bingbot
+User-agent: Bingbot
+Allow: /
+
+# Sitemap declaration for Google & Bing search indexing
+Sitemap: https://alokpoth.zihan.uk/sitemap.xml

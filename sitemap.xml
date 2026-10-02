@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- HOMEPAGE -->
+  <url>
+    <loc>https://alokpoth.zihan.uk/</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://alokpoth.zihan.uk/" />
+    <xhtml:link rel="alternate" hreflang="bn" href="https://alokpoth.zihan.uk/?lang=bn" />
+    <image:image>
+      <image:loc>https://alokpoth.zihan.uk/assets/og-image.png</image:loc>
+      <image:title>Alora by Alokpoth: Privacy by default Sovereign AI</image:title>
+      <image:caption>Sovereign Private AI Assistant with Zero Model Training</image:caption>
+    </image:image>
+  </url>
+
+  <!-- ARCHITECTURE & FEATURES -->
+  <url>
+    <loc>https://alokpoth.zihan.uk/#features</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- LIVE AI DEMO -->
+  <url>
+    <loc>https://alokpoth.zihan.uk/#demo</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- COMPARISON TABLE (ALORA VS CHATGPT/GEMINI) -->
+  <url>
+    <loc>https://alokpoth.zihan.uk/#comparison</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- ANDROID APK DOWNLOADS -->
+  <url>
+    <loc>https://alokpoth.zihan.uk/#download</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <!-- PRICING & SUBSCRIPTION PLANS -->
+  <url>
+    <loc>https://alokpoth.zihan.uk/#pricing</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- FREQUENTLY ASKED QUESTIONS (FAQ) -->
+  <url>
+    <loc>https://alokpoth.zihan.uk/#faq</loc>
+    <lastmod>2026-10-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
