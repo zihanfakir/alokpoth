@@ -117,9 +117,12 @@
   <!-- CUSTOM ADVANCED CSS FOR DUAL LIGHT & DARK MODE + MAGIC UI EFFECTS -->
   <style>
     html, body {
-      overflow-x: hidden;
-      max-width: 100vw;
-      width: 100%;
+      overflow-x: hidden !important;
+      max-width: 100vw !important;
+      width: 100% !important;
+      position: relative;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* Dark Theme (Proton Midnight Obsidian) */
@@ -231,13 +234,15 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* Shimmer Button */
+    /* Shimmer Button with Rigid Mobile Isolation */
     .shimmer-btn {
       background: linear-gradient(135deg, #6D4AFF 0%, #805DFE 100%);
       box-shadow: 0 4px 20px -2px rgba(109, 74, 255, 0.45);
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
       position: relative;
-      overflow: hidden;
+      overflow: hidden !important;
+      isolation: isolate;
+      contain: paint;
     }
     .shimmer-btn::after {
       content: '';
@@ -250,6 +255,7 @@
       transform: rotate(30deg);
       transition: transform 0.6s ease;
       pointer-events: none;
+      contain: paint;
     }
     .shimmer-btn:hover::after {
       transform: rotate(30deg) translate(50%, 50%);
@@ -259,11 +265,18 @@
       transform: translateY(-1.5px);
     }
 
-    /* Marquee Track */
+    /* Marquee Track and Strict Overflow Containment */
+    .marquee-container {
+      width: 100%;
+      max-width: 100vw;
+      overflow: hidden;
+      contain: paint;
+    }
     .marquee-track {
       display: flex;
       width: max-content;
       animation: marqueeScroll 35s linear infinite;
+      will-change: transform;
     }
     .marquee-track:hover {
       animation-play-state: paused;
@@ -273,7 +286,7 @@
       100% { transform: translateX(-50%); }
     }
 
-    /* Custom Scrollbar & Utility */
+    /* Custom Scrollbar & Touch Utility */
     .no-scrollbar::-webkit-scrollbar {
       display: none;
     }
@@ -283,6 +296,10 @@
     }
     .smooth-transition {
       transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+    }
+    .touch-scroll {
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
     }
   </style>
 
@@ -382,21 +399,22 @@
 </head>
 <body class="smooth-transition antialiased selection:bg-brand-500 selection:text-white font-sans">
 
-  <!-- TOP ANNOUNCEMENT BANNER -->
-  <aside aria-label="Announcement" class="bg-gradient-to-r from-brand-900 via-brand-700 to-brand-900 py-2 px-3 text-center text-xs text-brand-100 font-medium border-b border-brand-600/30 flex items-center justify-center gap-2 flex-wrap">
-    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/20 text-white tracking-wide uppercase">New Release</span>
-    <span data-i18n="announcement">Alora Android Native App v1.2.1 is now available for direct APK download.</span>
-    <a href="#download" class="underline hover:text-white font-semibold transition" data-i18n="learnMore">Download APK (9.4 MB) →</a>
+  <!-- TOP ANNOUNCEMENT BANNER (COMPACT & RESPONSIVE ON MOBILE) -->
+  <aside aria-label="Announcement" class="bg-gradient-to-r from-brand-900 via-brand-700 to-brand-900 py-1.5 px-3 text-center text-xs text-brand-100 font-medium border-b border-brand-600/30 flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
+    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/20 text-white tracking-wide uppercase">New</span>
+    <span class="hidden sm:inline" data-i18n="announcement">Alora Android Native App v1.2.1 is now available for direct APK download.</span>
+    <span class="sm:hidden font-medium">Alora v1.2.1 Android APK released</span>
+    <a href="#download" class="underline hover:text-white font-semibold transition shrink-0" data-i18n="learnMore">APK (9.4 MB) →</a>
   </aside>
 
   <!-- NAVIGATION BAR (PROTON-INSPIRED WITH LIGHT/DARK & BILINGUAL TOGGLE) -->
   <header class="sticky top-0 z-50 bg-[#0B0B14]/90 dark:bg-[#0B0B14]/90 light:bg-white/95 backdrop-blur-xl border-b border-brand-border light:border-slate-200 theme-surface transition-colors">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
       
       <!-- LOGO (ALOKPOTH BRAND WITH ALORA PILL) -->
-      <a href="#" class="flex items-center gap-2.5 group focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-lg p-1 shrink-0" aria-label="Alokpoth Home">
-        <img id="navLogo" src="assets/logo-full-dark.png" alt="Alokpoth Logo" class="h-7 sm:h-9 w-auto object-contain transition-transform group-hover:scale-105" width="160" height="36">
-        <span class="hidden md:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-brand-500/15 text-brand-400 light:text-brand-600 border border-brand-500/30">
+      <a href="#" class="flex items-center gap-2 group focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-lg p-1 shrink-0" aria-label="Alokpoth Home">
+        <img id="navLogo" src="assets/logo-full-dark.png" alt="Alokpoth Logo" class="h-6 sm:h-8 md:h-9 w-auto object-contain transition-transform group-hover:scale-105" width="160" height="36">
+        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-extrabold uppercase tracking-wider bg-brand-500/15 text-brand-400 light:text-brand-600 border border-brand-500/30">
           <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
           Alora
         </span>
@@ -424,7 +442,7 @@
         </button>
 
         <!-- BILINGUAL LANGUAGE SWITCHER -->
-        <button id="langToggleBtn" onclick="toggleLanguage()" class="flex items-center gap-1.5 px-2.5 sm:px-3 py-2 rounded-xl border border-brand-border light:border-slate-300 theme-surface theme-surface-hover text-xs font-semibold text-gray-200 light:text-slate-800 transition focus:outline-none" title="Switch Language">
+        <button id="langToggleBtn" onclick="toggleLanguage()" class="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl border border-brand-border light:border-slate-300 theme-surface theme-surface-hover text-xs font-semibold text-gray-200 light:text-slate-800 transition focus:outline-none" title="Switch Language">
           <svg class="w-3.5 h-3.5 text-brand-400 light:text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path></svg>
           <span id="currentLangLabel">বাংলা</span>
         </button>
@@ -442,49 +460,69 @@
       </div>
     </div>
 
-    <!-- MOBILE DROPDOWN NAVIGATION -->
-    <div id="mobileMenu" class="hidden lg:hidden theme-surface border-b border-brand-border light:border-slate-200 px-4 pt-4 pb-6 space-y-3">
-      <a href="#demo" onclick="toggleMobileMenu()" class="block py-2 font-medium text-sm">Live AI Demo</a>
-      <a href="#features" onclick="toggleMobileMenu()" class="block py-2 font-medium text-sm">Architecture</a>
-      <a href="#comparison" onclick="toggleMobileMenu()" class="block py-2 font-medium text-sm">Alora vs Big Tech</a>
-      <a href="#download" onclick="toggleMobileMenu()" class="block py-2 font-medium text-sm">Get the App</a>
-      <a href="#pricing" onclick="toggleMobileMenu()" class="block py-2 font-medium text-sm">Pricing</a>
-      <a href="#faq" onclick="toggleMobileMenu()" class="block py-2 font-medium text-sm">FAQ</a>
-      <div class="pt-3">
-        <a href="#download" onclick="toggleMobileMenu()" class="block w-full shimmer-btn py-3 rounded-xl text-center font-bold text-sm text-white">Get Alora Free</a>
+    <!-- MOBILE DROPDOWN NAVIGATION (SLEEK & TOUCH COMFORTABLE) -->
+    <div id="mobileMenu" class="hidden lg:hidden theme-surface border-b border-brand-border light:border-slate-200 px-4 pt-3 pb-6 space-y-2 shadow-2xl">
+      <a href="#demo" onclick="toggleMobileMenu()" class="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-white/5 font-medium text-sm text-gray-200 light:text-slate-800">
+        <span>💬 Live AI Demo</span>
+        <span class="text-xs text-brand-400">Try →</span>
+      </a>
+      <a href="#features" onclick="toggleMobileMenu()" class="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-white/5 font-medium text-sm text-gray-200 light:text-slate-800">
+        <span>🛡️ Architecture & Privacy</span>
+        <span class="text-xs text-brand-400">View →</span>
+      </a>
+      <a href="#comparison" onclick="toggleMobileMenu()" class="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-white/5 font-medium text-sm text-gray-200 light:text-slate-800">
+        <span>⚖️ Alora vs Big Tech</span>
+        <span class="text-xs text-brand-400">Compare →</span>
+      </a>
+      <a href="#download" onclick="toggleMobileMenu()" class="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-white/5 font-medium text-sm text-gray-200 light:text-slate-800">
+        <span>📥 Download Android APK</span>
+        <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400">9.4 MB</span>
+      </a>
+      <a href="#pricing" onclick="toggleMobileMenu()" class="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-white/5 font-medium text-sm text-gray-200 light:text-slate-800">
+        <span>💳 Pricing Plans</span>
+        <span class="text-xs text-brand-400">Free →</span>
+      </a>
+      <a href="#faq" onclick="toggleMobileMenu()" class="flex items-center justify-between py-2.5 px-3 rounded-xl hover:bg-white/5 font-medium text-sm text-gray-200 light:text-slate-800">
+        <span>❓ FAQ</span>
+        <span class="text-xs text-brand-400">Answers →</span>
+      </a>
+      <div class="pt-2">
+        <a href="downloads/Alora.apk" download="Alora.apk" onclick="toggleMobileMenu()" class="block w-full shimmer-btn py-3 rounded-xl text-center font-bold text-sm text-white shadow-lg">
+          📥 Direct Download Alora APK (v1.2.1)
+        </a>
       </div>
     </div>
   </header>
 
   <main>
     <!-- HERO SECTION (PROTON-STYLE WITH MAGIC UI GLOW) -->
-    <section class="relative pt-10 pb-16 md:pt-20 md:pb-24 hero-glow bg-grid-pattern overflow-hidden">
-      <!-- Glow ambient background shapes -->
-      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[720px] h-[360px] bg-brand-500/20 rounded-full blur-[140px] pointer-events-none animate-pulse-glow"></div>
+    <section class="relative pt-8 pb-12 sm:pt-14 sm:pb-20 md:pt-20 md:pb-24 hero-glow bg-grid-pattern overflow-hidden">
+      <!-- Glow ambient background shapes with strict mobile bounding -->
+      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] sm:w-[500px] md:w-[720px] max-w-[90vw] h-[220px] sm:h-[360px] bg-brand-500/20 rounded-full blur-[80px] sm:blur-[140px] pointer-events-none animate-pulse-glow"></div>
 
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         
         <!-- PRIVACY BADGE -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full card-glass text-brand-400 light:text-brand-600 text-[11px] sm:text-xs font-semibold mb-6 shadow-sm border border-brand-500/30 max-w-[94vw]">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+        <div class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full card-glass text-brand-400 light:text-brand-600 text-[10px] sm:text-xs font-semibold mb-5 sm:mb-6 shadow-sm border border-brand-500/30 max-w-[94vw]">
+          <span class="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
           <span data-i18n="heroBadge" class="truncate">ALORA BY ALOKPOTH • PRIVACY BY DEFAULT SOVEREIGN AI</span>
         </div>
 
         <!-- MAIN H1 HEADLINE (FOR GOOGLE RANK #1) -->
-        <h1 class="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.15] mb-6 font-display break-words px-2">
+        <h1 class="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.18] sm:leading-[1.15] mb-5 sm:mb-6 font-display break-words px-1 sm:px-2">
           <span class="gradient-text" data-i18n="heroTitle">Intelligence with privacy and freedom.</span>
         </h1>
 
         <!-- SUBTITLE -->
-        <p class="max-w-3xl mx-auto text-sm sm:text-lg md:text-xl text-[#B3B2C7] light:text-slate-600 leading-relaxed mb-10 font-normal px-3" data-i18n="heroSubtitle">
+        <p class="max-w-3xl mx-auto text-xs sm:text-lg md:text-xl text-[#B3B2C7] light:text-slate-600 leading-relaxed mb-8 sm:mb-10 font-normal px-2" data-i18n="heroSubtitle">
           Meet Alora: The private, sovereign AI assistant. High-speed reasoning, live private web search, document analysis, and image generation—with zero training on your conversations and mathematical zero-knowledge privacy.
         </p>
 
-        <!-- CTA BUTTONS -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 mb-14 max-w-sm sm:max-w-none mx-auto w-full px-2">
+        <!-- CTA BUTTONS (MOBILE FRIENDLY TOUCH TARGETS) -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-10 sm:mb-14 max-w-sm sm:max-w-none mx-auto w-full px-2">
           <a href="#demo" class="w-full sm:w-auto shimmer-btn px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl text-sm sm:text-base font-bold text-white flex items-center justify-center gap-2.5 shadow-xl">
             <span data-i18n="btnTryAlora">Try Live Demo Free</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
           </a>
           
           <a href="#download" class="w-full sm:w-auto px-5 sm:px-8 py-3.5 sm:py-4 rounded-2xl border border-brand-border light:border-slate-300 theme-surface theme-surface-hover text-xs sm:text-base font-semibold text-gray-200 light:text-slate-800 transition flex items-center justify-center gap-2 shadow-sm">
@@ -494,31 +532,31 @@
         </div>
 
         <!-- TRUST METRICS STRIP -->
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 pt-8 border-t border-brand-border/60 light:border-slate-200 max-w-4xl mx-auto">
-          <div class="text-center">
-            <div class="text-2xl sm:text-3xl font-extrabold text-brand-400 light:text-brand-600 font-display">0%</div>
-            <div class="text-xs sm:text-sm text-gray-400 light:text-slate-500 font-medium mt-1" data-i18n="statNoTraining">Zero Model Training</div>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-6 pt-6 sm:pt-8 border-t border-brand-border/60 light:border-slate-200 max-w-4xl mx-auto">
+          <div class="text-center p-3 rounded-2xl bg-white/[0.02] light:bg-slate-50 border border-white/5 light:border-slate-200/50">
+            <div class="text-xl sm:text-3xl font-extrabold text-brand-400 light:text-brand-600 font-display">0%</div>
+            <div class="text-[11px] sm:text-sm text-gray-400 light:text-slate-500 font-medium mt-0.5 sm:mt-1" data-i18n="statNoTraining">Zero Model Training</div>
           </div>
-          <div class="text-center">
-            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-display">100%</div>
-            <div class="text-xs sm:text-sm text-gray-400 light:text-slate-500 font-medium mt-1" data-i18n="statEncrypted">Encrypted Sessions</div>
+          <div class="text-center p-3 rounded-2xl bg-white/[0.02] light:bg-slate-50 border border-white/5 light:border-slate-200/50">
+            <div class="text-xl sm:text-3xl font-extrabold text-emerald-400 font-display">100%</div>
+            <div class="text-[11px] sm:text-sm text-gray-400 light:text-slate-500 font-medium mt-0.5 sm:mt-1" data-i18n="statEncrypted">Encrypted Sessions</div>
           </div>
-          <div class="text-center">
-            <div class="text-2xl sm:text-3xl font-extrabold text-blue-400 font-display">Live</div>
-            <div class="text-xs sm:text-sm text-gray-400 light:text-slate-500 font-medium mt-1" data-i18n="statPrivateSearch">Private Web Search</div>
+          <div class="text-center p-3 rounded-2xl bg-white/[0.02] light:bg-slate-50 border border-white/5 light:border-slate-200/50">
+            <div class="text-xl sm:text-3xl font-extrabold text-blue-400 font-display">Live</div>
+            <div class="text-[11px] sm:text-sm text-gray-400 light:text-slate-500 font-medium mt-0.5 sm:mt-1" data-i18n="statPrivateSearch">Private Web Search</div>
           </div>
-          <div class="text-center">
-            <div class="text-2xl sm:text-3xl font-extrabold text-amber-400 font-display">120Hz</div>
-            <div class="text-xs sm:text-sm text-gray-400 light:text-slate-500 font-medium mt-1" data-i18n="statNativeApp">Native Android & iOS</div>
+          <div class="text-center p-3 rounded-2xl bg-white/[0.02] light:bg-slate-50 border border-white/5 light:border-slate-200/50">
+            <div class="text-xl sm:text-3xl font-extrabold text-amber-400 font-display">120Hz</div>
+            <div class="text-[11px] sm:text-sm text-gray-400 light:text-slate-500 font-medium mt-0.5 sm:mt-1" data-i18n="statNativeApp">Native Android & iOS</div>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- MAGIC UI INFINITE SECURITY TICKER / MARQUEE -->
-    <div class="relative w-full overflow-hidden py-4 border-y border-brand-border/60 light:border-slate-200 bg-[#0E0C1B] light:bg-slate-50">
-      <div class="marquee-track flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-gray-400 light:text-slate-600">
+    <!-- MAGIC UI INFINITE SECURITY TICKER / MARQUEE (RIGID CONTAINMENT) -->
+    <div class="marquee-container relative w-full overflow-hidden py-3 sm:py-4 border-y border-brand-border/60 light:border-slate-200 bg-[#0E0C1B] light:bg-slate-50">
+      <div class="marquee-track flex items-center gap-6 sm:gap-8 text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-gray-400 light:text-slate-600">
         <div class="flex items-center gap-2 shrink-0"><span class="text-emerald-400">🛡️</span> Cure53 Security Audited</div>
         <div class="w-1.5 h-1.5 rounded-full bg-brand-500/40 shrink-0"></div>
         <div class="flex items-center gap-2 shrink-0"><span class="text-brand-400">🔐</span> Kyber-1024 Quantum Resistant</div>
@@ -547,46 +585,46 @@
     </div>
 
     <!-- INTERACTIVE AI DEMO PLAYGROUND WITH MAGIC UI BORDER BEAM -->
-    <section id="demo" class="py-20 bg-[#0B0B14] light:bg-slate-100/70 border-b border-brand-border light:border-slate-200 relative">
+    <section id="demo" class="py-12 sm:py-20 bg-[#0B0B14] light:bg-slate-100/70 border-b border-brand-border light:border-slate-200 relative">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-2xl mx-auto mb-10">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-glass text-xs text-brand-400 light:text-brand-600 font-semibold mb-3 border border-brand-500/30">
+        <div class="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+          <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full card-glass text-[11px] sm:text-xs text-brand-400 light:text-brand-600 font-semibold mb-3 border border-brand-500/30">
             💬 INTERACTIVE PRIVATE AI PLAYGROUND
           </div>
-          <h2 class="text-3xl sm:text-4xl font-extrabold font-display" data-i18n="demoTitle">Experience Alora in Real Time</h2>
-          <p class="text-gray-400 light:text-slate-600 mt-3 text-sm sm:text-base" data-i18n="demoDesc">
+          <h2 class="text-2xl sm:text-4xl font-extrabold font-display" data-i18n="demoTitle">Experience Alora in Real Time</h2>
+          <p class="text-gray-400 light:text-slate-600 mt-2 sm:mt-3 text-xs sm:text-base" data-i18n="demoDesc">
             Click any prompt below or type your own question. See how Alora reasons deeply without logging your identity.
           </p>
         </div>
 
         <!-- BORDER BEAM WRAPPER -->
-        <div class="border-beam-container rounded-3xl p-[1.5px] relative">
+        <div class="border-beam-container rounded-2xl sm:rounded-3xl p-[1.5px] relative">
           <div class="border-beam-glow"></div>
 
           <!-- CHAT INTERFACE CONTAINER -->
-          <div class="chat-preview-box rounded-3xl p-4 sm:p-7 shadow-2xl relative">
+          <div class="chat-preview-box rounded-2xl sm:rounded-3xl p-3.5 sm:p-7 shadow-2xl relative">
             
             <!-- CHAT HEADER & CONTROLS -->
-            <div class="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-brand-border/60 light:border-slate-200 text-xs">
-              <div class="flex items-center gap-3">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white font-bold text-sm shadow">
+            <div class="flex items-center justify-between gap-2 pb-3 sm:pb-4 border-b border-brand-border/60 light:border-slate-200 text-xs">
+              <div class="flex items-center gap-2.5 sm:gap-3">
+                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-500 flex items-center justify-center text-white font-bold text-xs sm:text-sm shadow shrink-0">
                   A
                 </div>
                 <div>
-                  <div class="font-bold text-sm flex items-center gap-1.5">
+                  <div class="font-bold text-xs sm:text-sm flex items-center gap-1.5">
                     <span>Alora AI</span>
-                    <span class="px-1.5 py-0.5 rounded text-[10px] bg-emerald-500/20 text-emerald-400 light:text-emerald-600 font-semibold flex items-center gap-1">
+                    <span class="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] bg-emerald-500/20 text-emerald-400 light:text-emerald-600 font-semibold flex items-center gap-1">
                       <span class="w-1 h-1 rounded-full bg-emerald-400"></span> Live
                     </span>
                   </div>
-                  <div class="text-[11px] text-gray-400 light:text-slate-500">Zero-Retention • Client-Side Encryption</div>
+                  <div class="text-[10px] sm:text-[11px] text-gray-400 light:text-slate-500 truncate">Zero-Retention • Client-Side Encryption</div>
                 </div>
               </div>
 
               <!-- MODEL & STATUS CONTROLS -->
-              <div class="flex items-center gap-2">
-                <div class="hidden sm:inline-flex items-center gap-1.5 text-[11px] text-emerald-400 light:text-emerald-700 bg-emerald-500/10 light:bg-emerald-50 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
+              <div class="flex items-center gap-1.5 sm:gap-2">
+                <div class="hidden md:inline-flex items-center gap-1.5 text-[11px] text-emerald-400 light:text-emerald-700 bg-emerald-500/10 light:bg-emerald-50 border border-emerald-500/20 px-2.5 py-1 rounded-lg">
                   <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
                   <span>Zero Retention Active</span>
                 </div>
@@ -598,18 +636,18 @@
             </div>
 
             <!-- CHAT MESSAGES DISPLAY BOX -->
-            <div id="chatMessages" class="py-5 space-y-4 max-h-[420px] overflow-y-auto no-scrollbar font-sans text-sm">
+            <div id="chatMessages" class="py-3 sm:py-5 space-y-3 sm:space-y-4 max-h-[380px] sm:max-h-[420px] overflow-y-auto no-scrollbar font-sans text-xs sm:text-sm">
               
               <!-- INITIAL GREETING -->
-              <div class="flex items-start gap-3">
+              <div class="flex items-start gap-2.5 sm:gap-3">
                 <div class="w-7 h-7 rounded-lg bg-brand-500 text-white flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 shadow">
                   A
                 </div>
-                <div class="card-glass p-4 rounded-2xl rounded-tl-sm max-w-xl text-sm leading-relaxed border border-brand-border/60 light:border-slate-200">
+                <div class="card-glass p-3.5 sm:p-4 rounded-2xl rounded-tl-sm max-w-[90%] sm:max-w-xl text-xs sm:text-sm leading-relaxed border border-brand-border/60 light:border-slate-200">
                   <p class="font-medium">
                     Hello! I am <strong class="text-brand-400 light:text-brand-600">Alora</strong>, your private sovereign AI assistant. How can I help you today?
                   </p>
-                  <p class="text-xs text-gray-400 light:text-slate-500 mt-2">
+                  <p class="text-[11px] sm:text-xs text-gray-400 light:text-slate-500 mt-2">
                     🔒 All prompts are client-side encrypted with zero model retraining. Choose a topic below or type anything!
                   </p>
                 </div>
@@ -618,33 +656,33 @@
             </div>
 
             <!-- STREAMING TYPING INDICATOR -->
-            <div id="typingIndicator" class="hidden items-center gap-3 py-2 px-1 text-xs text-brand-400 light:text-brand-600 font-medium">
-              <div class="w-6 h-6 rounded-lg bg-brand-500/20 flex items-center justify-center text-xs">
+            <div id="typingIndicator" class="hidden items-center gap-2 sm:gap-3 py-2 px-1 text-xs text-brand-400 light:text-brand-600 font-medium">
+              <div class="w-5 h-5 sm:w-6 sm:h-6 rounded-lg bg-brand-500/20 flex items-center justify-center text-xs">
                 <span class="animate-ping w-2 h-2 rounded-full bg-brand-400"></span>
               </div>
               <span id="typingStatusText">Alora is reasoning securely...</span>
             </div>
 
-            <!-- PROMPT PRESET CHIPS -->
-            <div class="pt-3 pb-2 flex items-center gap-2 overflow-x-auto no-scrollbar text-xs">
-              <button onclick="sendQuickPrompt('Explain how Zero-Knowledge AI works compared to ChatGPT')" class="px-3.5 py-2 rounded-xl card-glass hover:border-brand-400 light:hover:border-brand-500 whitespace-nowrap transition text-gray-300 light:text-slate-700 flex items-center gap-1.5 border border-brand-border/60">
+            <!-- PROMPT PRESET CHIPS (HORIZONTAL SCROLL ON MOBILE) -->
+            <div class="pt-2.5 pb-2 flex items-center gap-1.5 sm:gap-2 overflow-x-auto no-scrollbar text-xs -mx-1 px-1 touch-pan-x">
+              <button onclick="sendQuickPrompt('Explain how Zero-Knowledge AI works compared to ChatGPT')" class="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl card-glass hover:border-brand-400 light:hover:border-brand-500 whitespace-nowrap transition text-gray-300 light:text-slate-700 flex items-center gap-1.5 border border-brand-border/60 text-[11px] sm:text-xs shrink-0">
                 <span>💡</span> Zero-Knowledge vs ChatGPT
               </button>
-              <button onclick="sendQuickPrompt('Search live 2026 tech trends in privacy & cybersecurity')" class="px-3.5 py-2 rounded-xl card-glass hover:border-brand-400 light:hover:border-brand-500 whitespace-nowrap transition text-gray-300 light:text-slate-700 flex items-center gap-1.5 border border-brand-border/60">
+              <button onclick="sendQuickPrompt('Search live 2026 tech trends in privacy & cybersecurity')" class="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl card-glass hover:border-brand-400 light:hover:border-brand-500 whitespace-nowrap transition text-gray-300 light:text-slate-700 flex items-center gap-1.5 border border-brand-border/60 text-[11px] sm:text-xs shrink-0">
                 <span>🌐</span> Live Private Web Search
               </button>
-              <button onclick="sendQuickPrompt('Write a clean Python script to encrypt files with AES-256-GCM')" class="px-3.5 py-2 rounded-xl card-glass hover:border-brand-400 light:hover:border-brand-500 whitespace-nowrap transition text-gray-300 light:text-slate-700 flex items-center gap-1.5 border border-brand-border/60">
+              <button onclick="sendQuickPrompt('Write a clean Python script to encrypt files with AES-256-GCM')" class="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl card-glass hover:border-brand-400 light:hover:border-brand-500 whitespace-nowrap transition text-gray-300 light:text-slate-700 flex items-center gap-1.5 border border-brand-border/60 text-[11px] sm:text-xs shrink-0">
                 <span>⚡</span> Code & Encryption Task
               </button>
-              <button onclick="sendQuickPrompt('আলোকপথ এবং আলোরার গোপনীয়তা নীতিমালা সংক্ষেপে বলো')" class="px-3.5 py-2 rounded-xl card-glass hover:border-brand-400 light:hover:border-brand-500 whitespace-nowrap transition text-gray-300 light:text-slate-700 flex items-center gap-1.5 border border-brand-border/60">
+              <button onclick="sendQuickPrompt('আলোকপথ এবং আলোরার গোপনীয়তা নীতিমালা সংক্ষেপে বলো')" class="px-3 sm:px-3.5 py-1.5 sm:py-2 rounded-xl card-glass hover:border-brand-400 light:hover:border-brand-500 whitespace-nowrap transition text-gray-300 light:text-slate-700 flex items-center gap-1.5 border border-brand-border/60 text-[11px] sm:text-xs shrink-0">
                 <span>🇧🇩</span> বাংলায় গোপনীয়তা নীতি
               </button>
             </div>
 
             <!-- INPUT FORM -->
-            <form onsubmit="handleChatSubmit(event)" class="mt-2 flex items-center gap-2 p-1.5 rounded-2xl theme-surface border border-brand-border light:border-slate-300 shadow-sm">
-              <input type="text" id="chatInput" placeholder="Ask Alora anything private..." class="w-full bg-transparent px-3 py-2 text-sm focus:outline-none" autocomplete="off" required>
-              <button type="submit" id="chatSendBtn" class="shimmer-btn px-4 sm:px-5 py-2.5 rounded-xl text-white font-bold text-xs flex items-center gap-1.5 shrink-0 shadow">
+            <form onsubmit="handleChatSubmit(event)" class="mt-2 flex items-center gap-1.5 sm:gap-2 p-1 sm:p-1.5 rounded-2xl theme-surface border border-brand-border light:border-slate-300 shadow-sm">
+              <input type="text" id="chatInput" placeholder="Ask Alora anything private..." class="w-full bg-transparent px-2.5 sm:px-3 py-2 text-xs sm:text-sm focus:outline-none" autocomplete="off" required>
+              <button type="submit" id="chatSendBtn" class="shimmer-btn px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-white font-bold text-xs flex items-center gap-1.5 shrink-0 shadow">
                 <span>Send</span>
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
               </button>
@@ -657,97 +695,97 @@
     </section>
 
     <!-- CORE ARCHITECTURE & BENTO GRID FEATURES (ALORA ONLY) -->
-    <section id="features" class="py-24 theme-surface border-b border-brand-border light:border-slate-200 relative">
+    <section id="features" class="py-14 sm:py-24 theme-surface border-b border-brand-border light:border-slate-200 relative">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-16">
-          <h2 class="text-xs uppercase tracking-widest font-bold text-brand-400 light:text-brand-600 mb-3" data-i18n="featSubtitle">CUTTING-EDGE INTELLIGENCE</h2>
-          <p class="text-3xl sm:text-4xl font-extrabold font-display" data-i18n="featTitle">Built for power, designed for privacy</p>
-          <p class="text-gray-400 light:text-slate-600 mt-4 text-base" data-i18n="featDesc">Everything you expect from top-tier AI models, without selling your data to corporate advertising monopolies.</p>
+        <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
+          <h2 class="text-xs uppercase tracking-widest font-bold text-brand-400 light:text-brand-600 mb-2 sm:mb-3" data-i18n="featSubtitle">CUTTING-EDGE INTELLIGENCE</h2>
+          <p class="text-2xl sm:text-4xl font-extrabold font-display" data-i18n="featTitle">Built for power, designed for privacy</p>
+          <p class="text-gray-400 light:text-slate-600 mt-2 sm:mt-4 text-xs sm:text-base" data-i18n="featDesc">Everything you expect from top-tier AI models, without selling your data to corporate advertising monopolies.</p>
         </div>
 
-        <!-- BENTO GRID -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- BENTO GRID (RESPONSIVE CARDS) -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           
           <!-- BENTO 1: ZERO RETENTION (LARGE COL-SPAN 2) -->
-          <div class="md:col-span-2 card-glass rounded-3xl p-8 sm:p-10 flex flex-col justify-between relative overflow-hidden group">
-            <div class="space-y-4 relative z-10">
-              <div class="w-12 h-12 rounded-2xl bg-brand-500/15 text-brand-400 light:text-brand-600 flex items-center justify-center text-2xl font-bold">
+          <div class="md:col-span-2 card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-10 flex flex-col justify-between relative overflow-hidden group">
+            <div class="space-y-3 sm:space-y-4 relative z-10">
+              <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-brand-500/15 text-brand-400 light:text-brand-600 flex items-center justify-center text-xl sm:text-2xl font-bold">
                 🛡️
               </div>
-              <h3 class="text-2xl font-extrabold font-display" data-i18n="f1Title">Zero Model Training</h3>
-              <p class="text-gray-400 light:text-slate-600 text-sm sm:text-base leading-relaxed max-w-xl" data-i18n="f1Desc">
+              <h3 class="text-xl sm:text-2xl font-extrabold font-display" data-i18n="f1Title">Zero Model Training</h3>
+              <p class="text-gray-400 light:text-slate-600 text-xs sm:text-base leading-relaxed max-w-xl" data-i18n="f1Desc">
                 Your confidential thoughts, proprietary source code, and financial files are never used to train public or private models. What happens in Alora stays strictly yours.
               </p>
             </div>
             
-            <div class="mt-8 pt-6 border-t border-brand-border/60 light:border-slate-200 flex flex-wrap items-center gap-4 text-xs font-semibold text-emerald-400 light:text-emerald-700">
-              <span class="flex items-center gap-1.5 bg-emerald-500/10 px-3 py-1 rounded-full">✓ Mathematically Isolated</span>
-              <span class="flex items-center gap-1.5 bg-emerald-500/10 px-3 py-1 rounded-full">✓ No Data Retention</span>
-              <span class="flex items-center gap-1.5 bg-emerald-500/10 px-3 py-1 rounded-full">✓ 0 Advertising Trackers</span>
+            <div class="mt-6 sm:mt-8 pt-4 sm:pt-6 border-t border-brand-border/60 light:border-slate-200 flex flex-wrap items-center gap-2 sm:gap-4 text-[11px] sm:text-xs font-semibold text-emerald-400 light:text-emerald-700">
+              <span class="flex items-center gap-1.5 bg-emerald-500/10 px-2.5 sm:px-3 py-1 rounded-full">✓ Mathematically Isolated</span>
+              <span class="flex items-center gap-1.5 bg-emerald-500/10 px-2.5 sm:px-3 py-1 rounded-full">✓ No Data Retention</span>
+              <span class="flex items-center gap-1.5 bg-emerald-500/10 px-2.5 sm:px-3 py-1 rounded-full">✓ 0 Advertising Trackers</span>
             </div>
           </div>
 
           <!-- BENTO 2: PRIVATE LIVE WEB SEARCH -->
-          <div class="card-glass rounded-3xl p-8 flex flex-col justify-between">
-            <div class="space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-blue-500/15 text-blue-400 flex items-center justify-center text-2xl font-bold">
+          <div class="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
+            <div class="space-y-3 sm:space-y-4">
+              <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-blue-500/15 text-blue-400 flex items-center justify-center text-xl sm:text-2xl font-bold">
                 🔍
               </div>
-              <h3 class="text-xl font-extrabold font-display" data-i18n="f2Title">Private Live Web Search</h3>
-              <p class="text-gray-400 light:text-slate-600 text-sm leading-relaxed" data-i18n="f2Desc">
+              <h3 class="text-lg sm:text-xl font-extrabold font-display" data-i18n="f2Title">Private Live Web Search</h3>
+              <p class="text-gray-400 light:text-slate-600 text-xs sm:text-sm leading-relaxed" data-i18n="f2Desc">
                 Ask about current events, sports, financial markets, or breaking news. Alora queries search engines anonymously without tracking your IP or cookies.
               </p>
             </div>
-            <div class="mt-6 text-xs text-blue-400 font-semibold">
+            <div class="mt-4 sm:mt-6 text-xs text-blue-400 font-semibold">
               Anonymous Search Proxy Relay →
             </div>
           </div>
 
           <!-- BENTO 3: DEEP REASONING ENGINE -->
-          <div class="card-glass rounded-3xl p-8 flex flex-col justify-between">
-            <div class="space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center text-2xl font-bold">
+          <div class="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
+            <div class="space-y-3 sm:space-y-4">
+              <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-purple-500/15 text-purple-400 flex items-center justify-center text-xl sm:text-2xl font-bold">
                 🧠
               </div>
-              <h3 class="text-xl font-extrabold font-display" data-i18n="f3Title">Deep Thinking Engine</h3>
-              <p class="text-gray-400 light:text-slate-600 text-sm leading-relaxed" data-i18n="f3Desc">
+              <h3 class="text-lg sm:text-xl font-extrabold font-display" data-i18n="f3Title">Deep Thinking Engine</h3>
+              <p class="text-gray-400 light:text-slate-600 text-xs sm:text-sm leading-relaxed" data-i18n="f3Desc">
                 Toggle on Deep Thinking mode for complex math, algorithmic coding, architectural planning, and multi-step logical deduction.
               </p>
             </div>
-            <div class="mt-6 text-xs text-purple-400 font-semibold">
+            <div class="mt-4 sm:mt-6 text-xs text-purple-400 font-semibold">
               Step-by-step verifiable deduction →
             </div>
           </div>
 
           <!-- BENTO 4: DOCUMENT & PDF ANALYSIS -->
-          <div class="card-glass rounded-3xl p-8 flex flex-col justify-between">
-            <div class="space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-2xl font-bold">
+          <div class="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
+            <div class="space-y-3 sm:space-y-4">
+              <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-amber-500/15 text-amber-400 flex items-center justify-center text-xl sm:text-2xl font-bold">
                 📄
               </div>
-              <h3 class="text-xl font-extrabold font-display" data-i18n="f4Title">Document & PDF Analysis</h3>
-              <p class="text-gray-400 light:text-slate-600 text-sm leading-relaxed" data-i18n="f4Desc">
+              <h3 class="text-lg sm:text-xl font-extrabold font-display" data-i18n="f4Title">Document & PDF Analysis</h3>
+              <p class="text-gray-400 light:text-slate-600 text-xs sm:text-sm leading-relaxed" data-i18n="f4Desc">
                 Upload PDF reports, legal agreements, CSV spreadsheets, and code files. Alora extracts summaries, insights, and answers with zero cloud retention.
               </p>
             </div>
-            <div class="mt-6 text-xs text-amber-400 font-semibold">
+            <div class="mt-4 sm:mt-6 text-xs text-amber-400 font-semibold">
               Client-side decrypted extraction →
             </div>
           </div>
 
-          <!-- BENTO 5: NATIVE 120HZ ANDROID APK (LARGE) -->
-          <div class="card-glass rounded-3xl p-8 flex flex-col justify-between border border-brand-500/30">
-            <div class="space-y-4">
-              <div class="w-12 h-12 rounded-2xl bg-rose-500/15 text-rose-400 flex items-center justify-center text-2xl font-bold">
+          <!-- BENTO 5: NATIVE 120HZ ANDROID APK -->
+          <div class="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between border border-brand-500/30">
+            <div class="space-y-3 sm:space-y-4">
+              <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-rose-500/15 text-rose-400 flex items-center justify-center text-xl sm:text-2xl font-bold">
                 📱
               </div>
-              <h3 class="text-xl font-extrabold font-display" data-i18n="f6Title">Native Android & iOS Apps</h3>
-              <p class="text-gray-400 light:text-slate-600 text-sm leading-relaxed" data-i18n="f6Desc">
+              <h3 class="text-lg sm:text-xl font-extrabold font-display" data-i18n="f6Title">Native Android & iOS Apps</h3>
+              <p class="text-gray-400 light:text-slate-600 text-xs sm:text-sm leading-relaxed" data-i18n="f6Desc">
                 High-performance native Android APK with 120Hz smooth scrolling, biometric security, AMOLED dark mode, and offline conversation caching.
               </p>
             </div>
-            <div class="mt-6">
+            <div class="mt-4 sm:mt-6">
               <a href="#download" class="inline-flex items-center gap-1.5 text-xs text-brand-400 light:text-brand-600 font-bold hover:underline">
                 Direct APK v1.2.1 (9.4 MB) →
               </a>
@@ -759,56 +797,62 @@
       </div>
     </section>
 
-    <!-- ALORA VS BIG TECH AI (COMPARISON TABLE) -->
-    <section id="comparison" class="py-24 bg-[#0B0B14] light:bg-slate-50 border-b border-brand-border light:border-slate-200">
+    <!-- ALORA VS BIG TECH AI (COMPARISON TABLE WITH MOBILE SWIPE CONTAINER) -->
+    <section id="comparison" class="py-14 sm:py-24 bg-[#0B0B14] light:bg-slate-50 border-b border-brand-border light:border-slate-200">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-16">
-          <h2 class="text-xs uppercase tracking-widest font-bold text-brand-400 light:text-brand-600 mb-3" data-i18n="compSubtitle">WHY SWITCH TO ALORA</h2>
-          <p class="text-3xl sm:text-4xl font-extrabold font-display" data-i18n="compTitle">Alora vs Big Tech AI (ChatGPT, Gemini)</p>
-          <p class="text-gray-400 light:text-slate-600 mt-4 text-base" data-i18n="compDesc">How Alora protects you where conventional commercial AI platforms fall short.</p>
+        <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-16">
+          <h2 class="text-xs uppercase tracking-widest font-bold text-brand-400 light:text-brand-600 mb-2 sm:mb-3" data-i18n="compSubtitle">WHY SWITCH TO ALORA</h2>
+          <p class="text-2xl sm:text-4xl font-extrabold font-display" data-i18n="compTitle">Alora vs Big Tech AI (ChatGPT, Gemini)</p>
+          <p class="text-gray-400 light:text-slate-600 mt-2 sm:mt-4 text-xs sm:text-base" data-i18n="compDesc">How Alora protects you where conventional commercial AI platforms fall short.</p>
         </div>
 
-        <div class="overflow-x-auto">
-          <table class="w-full text-left border-collapse card-glass rounded-3xl overflow-hidden shadow-2xl">
+        <!-- MOBILE HORIZONTAL SWIPE HINT -->
+        <div class="flex sm:hidden items-center justify-center gap-1.5 text-xs text-brand-400 light:text-brand-600 font-medium mb-3">
+          <span data-i18n="swipeHint">👈 Swipe horizontally to compare 👉</span>
+        </div>
+
+        <!-- EDGE-TO-EDGE RESPONSIVE SCROLL CONTAINER -->
+        <div class="w-full max-w-full overflow-x-auto no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 touch-pan-x">
+          <table class="w-full min-w-[560px] text-left border-collapse card-glass rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl">
             <thead>
               <tr class="border-b border-brand-border light:border-slate-200 bg-[#141223] light:bg-slate-100">
-                <th class="py-4.5 px-6 text-sm font-bold text-gray-300 light:text-slate-700">Privacy & Performance</th>
-                <th class="py-4.5 px-6 text-sm font-bold text-brand-400 light:text-brand-600 text-center bg-brand-500/10">Alora (Alokpoth)</th>
-                <th class="py-4.5 px-6 text-sm font-bold text-gray-400 light:text-slate-500 text-center">ChatGPT (OpenAI)</th>
-                <th class="py-4.5 px-6 text-sm font-bold text-gray-400 light:text-slate-500 text-center">Google Gemini</th>
+                <th class="py-3.5 sm:py-4.5 px-4 sm:px-6 text-xs sm:text-sm font-bold text-gray-300 light:text-slate-700 min-w-[160px]">Privacy & Performance</th>
+                <th class="py-3.5 sm:py-4.5 px-4 sm:px-6 text-xs sm:text-sm font-bold text-brand-400 light:text-brand-600 text-center bg-brand-500/10 min-w-[130px]">Alora (Alokpoth)</th>
+                <th class="py-3.5 sm:py-4.5 px-4 sm:px-6 text-xs sm:text-sm font-bold text-gray-400 light:text-slate-500 text-center min-w-[110px]">ChatGPT (OpenAI)</th>
+                <th class="py-3.5 sm:py-4.5 px-4 sm:px-6 text-xs sm:text-sm font-bold text-gray-400 light:text-slate-500 text-center min-w-[110px]">Google Gemini</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-brand-border/60 light:divide-slate-200 text-sm">
+            <tbody class="divide-y divide-brand-border/60 light:divide-slate-200 text-xs sm:text-sm">
               <tr class="hover:bg-brand-surfaceLight/30 light:hover:bg-slate-100/60 transition">
-                <td class="py-4 px-6 font-medium">Trains AI models on your private prompts</td>
-                <td class="py-4 px-6 text-center text-emerald-400 light:text-emerald-600 font-bold bg-brand-500/5">✓ Never (Zero-Retention)</td>
-                <td class="py-4 px-6 text-center text-red-400 font-semibold">✗ Yes (Default on)</td>
-                <td class="py-4 px-6 text-center text-red-400 font-semibold">✗ Yes (Used for training)</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 font-medium">Trains AI models on your private prompts</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-emerald-400 light:text-emerald-600 font-bold bg-brand-500/5">✓ Never (Zero-Retention)</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-red-400 font-semibold">✗ Yes (Default on)</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-red-400 font-semibold">✗ Yes (Used for training)</td>
               </tr>
               <tr class="hover:bg-brand-surfaceLight/30 light:hover:bg-slate-100/60 transition">
-                <td class="py-4 px-6 font-medium">Monetizes telemetry or personal advertising</td>
-                <td class="py-4 px-6 text-center text-emerald-400 light:text-emerald-600 font-bold bg-brand-500/5">✓ Never (0 Trackers)</td>
-                <td class="py-4 px-6 text-center text-red-400 font-semibold">✗ Corporate partnerships</td>
-                <td class="py-4 px-6 text-center text-red-400 font-semibold">✗ Ad profile targeting</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 font-medium">Monetizes telemetry or personal advertising</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-emerald-400 light:text-emerald-600 font-bold bg-brand-500/5">✓ Never (0 Trackers)</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-red-400 font-semibold">✗ Corporate partnerships</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-red-400 font-semibold">✗ Ad profile targeting</td>
               </tr>
               <tr class="hover:bg-brand-surfaceLight/30 light:hover:bg-slate-100/60 transition">
-                <td class="py-4 px-6 font-medium">Mandatory phone verification required</td>
-                <td class="py-4 px-6 text-center text-emerald-400 light:text-emerald-600 font-bold bg-brand-500/5">✓ Anonymous (Not Required)</td>
-                <td class="py-4 px-6 text-center text-red-400 font-semibold">✗ Mandatory SMS</td>
-                <td class="py-4 px-6 text-center text-red-400 font-semibold">✗ Tied to Google Account</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 font-medium">Mandatory phone verification required</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-emerald-400 light:text-emerald-600 font-bold bg-brand-500/5">✓ Anonymous (Not Required)</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-red-400 font-semibold">✗ Mandatory SMS</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-red-400 font-semibold">✗ Tied to Google Account</td>
               </tr>
               <tr class="hover:bg-brand-surfaceLight/30 light:hover:bg-slate-100/60 transition">
-                <td class="py-4 px-6 font-medium">Direct Android APK Binary Download</td>
-                <td class="py-4 px-6 text-center text-emerald-400 light:text-emerald-600 font-bold bg-brand-500/5">✓ Direct APK + IPA</td>
-                <td class="py-4 px-6 text-center text-gray-500">Play Store Only</td>
-                <td class="py-4 px-6 text-center text-gray-500">Play Store Only</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 font-medium">Direct Android APK Binary Download</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-emerald-400 light:text-emerald-600 font-bold bg-brand-500/5">✓ Direct APK + IPA</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-gray-500">Play Store Only</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-gray-500">Play Store Only</td>
               </tr>
               <tr class="hover:bg-brand-surfaceLight/30 light:hover:bg-slate-100/60 transition">
-                <td class="py-4 px-6 font-medium">Bengali & Regional Language Nuance</td>
-                <td class="py-4 px-6 text-center text-emerald-400 light:text-emerald-600 font-bold bg-brand-500/5">✓ Native Cultural Fluency</td>
-                <td class="py-4 px-6 text-center text-gray-400">Basic Machine Translation</td>
-                <td class="py-4 px-6 text-center text-gray-400">Basic Translation</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 font-medium">Bengali & Regional Language Nuance</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-emerald-400 light:text-emerald-600 font-bold bg-brand-500/5">✓ Native Cultural Fluency</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-gray-400">Basic Machine Translation</td>
+                <td class="py-3.5 sm:py-4 px-4 sm:px-6 text-center text-gray-400">Basic Translation</td>
               </tr>
             </tbody>
           </table>
@@ -818,33 +862,33 @@
     </section>
 
     <!-- DOWNLOADS SECTION (ANDROID APK, APPLE IOS, WEB APP) -->
-    <section id="download" class="py-24 theme-surface border-b border-brand-border light:border-slate-200">
+    <section id="download" class="py-14 sm:py-24 theme-surface border-b border-brand-border light:border-slate-200">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-16">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-glass text-xs text-brand-400 light:text-brand-600 font-semibold mb-3 border border-brand-500/30">
+        <div class="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full card-glass text-[11px] sm:text-xs text-brand-400 light:text-brand-600 font-semibold mb-3 border border-brand-500/30">
             📥 DIRECT HIGH-SPEED DOWNLOAD
           </div>
-          <h2 class="text-3xl sm:text-4xl font-extrabold font-display" data-i18n="dlTitle">Get Alora on all your devices</h2>
-          <p class="text-gray-400 light:text-slate-600 mt-4 text-base" data-i18n="dlDesc">Install the high-performance native app or access Alora instantly in your web browser.</p>
+          <h2 class="text-2xl sm:text-4xl font-extrabold font-display" data-i18n="dlTitle">Get Alora on all your devices</h2>
+          <p class="text-gray-400 light:text-slate-600 mt-2 sm:mt-4 text-xs sm:text-base" data-i18n="dlDesc">Install the high-performance native app or access Alora instantly in your web browser.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8">
           
           <!-- ANDROID APK CARD (PRIMARY HERO CARD) -->
-          <div class="card-glass rounded-3xl p-8 flex flex-col justify-between border-2 border-brand-500 relative shadow-2xl">
+          <div class="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between border-2 border-brand-500 relative shadow-2xl">
             <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-brand-500 text-white text-[10px] font-extrabold uppercase tracking-wider shadow">
               Recommended • v1.2.1
             </div>
 
             <div>
-              <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-3xl mb-6">
+              <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-2xl sm:text-3xl mb-4 sm:mb-6">
                 🤖
               </div>
-              <h3 class="text-2xl font-extrabold font-display">Android App</h3>
+              <h3 class="text-xl sm:text-2xl font-extrabold font-display">Android App</h3>
               <p class="text-xs text-gray-400 light:text-slate-500 mt-1">Direct APK installation • Version 1.2.1</p>
               
-              <ul class="mt-6 space-y-2.5 text-xs text-gray-300 light:text-slate-600">
+              <ul class="mt-5 sm:mt-6 space-y-2 sm:space-y-2.5 text-xs text-gray-300 light:text-slate-600">
                 <li class="flex items-center gap-2">✓ <strong>120Hz Ultra-smooth scrolling</strong></li>
                 <li class="flex items-center gap-2">✓ <strong>Deep Thinking on/off toggle</strong></li>
                 <li class="flex items-center gap-2">✓ <strong>AMOLED Pure Dark Mode</strong></li>
@@ -853,27 +897,27 @@
               </ul>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-brand-border/60 light:border-slate-200 space-y-3">
-              <a href="downloads/Alora.apk" download="Alora.apk" class="w-full shimmer-btn py-3.5 rounded-xl text-white font-bold text-sm flex items-center justify-center gap-2 shadow-lg">
+            <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-brand-border/60 light:border-slate-200 space-y-2.5 sm:space-y-3">
+              <a href="downloads/Alora.apk" download="Alora.apk" class="w-full shimmer-btn py-3 sm:py-3.5 rounded-xl text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 shadow-lg">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
                 <span>Download Alora.apk</span>
               </a>
-              <div class="text-[11px] text-center text-gray-400 light:text-slate-500 font-mono">
+              <div class="text-[10px] sm:text-[11px] text-center text-gray-400 light:text-slate-500 font-mono">
                 SHA-256: 9b4e28... verified
               </div>
             </div>
           </div>
 
           <!-- IOS CARD -->
-          <div class="card-glass rounded-3xl p-8 flex flex-col justify-between">
+          <div class="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div class="w-14 h-14 rounded-2xl bg-blue-500/15 text-blue-400 flex items-center justify-center text-3xl mb-6">
+              <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-blue-500/15 text-blue-400 flex items-center justify-center text-2xl sm:text-3xl mb-4 sm:mb-6">
                 🍎
               </div>
-              <h3 class="text-2xl font-extrabold font-display">Apple iOS</h3>
+              <h3 class="text-xl sm:text-2xl font-extrabold font-display">Apple iOS</h3>
               <p class="text-xs text-gray-400 light:text-slate-500 mt-1">Direct IPA & Progressive Web App</p>
               
-              <ul class="mt-6 space-y-2.5 text-xs text-gray-300 light:text-slate-600">
+              <ul class="mt-5 sm:mt-6 space-y-2 sm:space-y-2.5 text-xs text-gray-300 light:text-slate-600">
                 <li class="flex items-center gap-2">✓ <strong>iPhone & iPad optimized</strong></li>
                 <li class="flex items-center gap-2">✓ <strong>Face ID biometric vault</strong></li>
                 <li class="flex items-center gap-2">✓ <strong>Instant Safari PWA install</strong></li>
@@ -881,23 +925,23 @@
               </ul>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-brand-border/60 light:border-slate-200">
-              <a href="downloads/Alora.ipa" download="Alora.ipa" class="w-full py-3.5 rounded-xl border border-brand-border light:border-slate-300 theme-surface-hover font-bold text-sm flex items-center justify-center gap-2 transition">
+            <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-brand-border/60 light:border-slate-200">
+              <a href="downloads/Alora.ipa" download="Alora.ipa" class="w-full py-3 sm:py-3.5 rounded-xl border border-brand-border light:border-slate-300 theme-surface-hover font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
                 <span>Download Alora.ipa</span>
               </a>
             </div>
           </div>
 
           <!-- WEB APP CARD -->
-          <div class="card-glass rounded-3xl p-8 flex flex-col justify-between">
+          <div class="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
             <div>
-              <div class="w-14 h-14 rounded-2xl bg-brand-500/15 text-brand-400 flex items-center justify-center text-3xl mb-6">
+              <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-brand-500/15 text-brand-400 flex items-center justify-center text-2xl sm:text-3xl mb-4 sm:mb-6">
                 🌐
               </div>
-              <h3 class="text-2xl font-extrabold font-display">Web Browser</h3>
+              <h3 class="text-xl sm:text-2xl font-extrabold font-display">Web Browser</h3>
               <p class="text-xs text-gray-400 light:text-slate-500 mt-1">No installation required • Instant Access</p>
               
-              <ul class="mt-6 space-y-2.5 text-xs text-gray-300 light:text-slate-600">
+              <ul class="mt-5 sm:mt-6 space-y-2 sm:space-y-2.5 text-xs text-gray-300 light:text-slate-600">
                 <li class="flex items-center gap-2">✓ <strong>Chrome, Safari, Firefox, Edge</strong></li>
                 <li class="flex items-center gap-2">✓ <strong>Zero cloud tracking cookies</strong></li>
                 <li class="flex items-center gap-2">✓ <strong>Client-side encryption keys</strong></li>
@@ -905,8 +949,8 @@
               </ul>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-brand-border/60 light:border-slate-200">
-              <a href="#demo" class="w-full py-3.5 rounded-xl border border-brand-border light:border-slate-300 theme-surface-hover font-bold text-sm flex items-center justify-center gap-2 transition">
+            <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-brand-border/60 light:border-slate-200">
+              <a href="#demo" class="w-full py-3 sm:py-3.5 rounded-xl border border-brand-border light:border-slate-300 theme-surface-hover font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition">
                 <span>Open Web Demo →</span>
               </a>
             </div>
@@ -918,41 +962,41 @@
     </section>
 
     <!-- PRICING PLANS (TAILORED EXCLUSIVELY FOR ALORA) -->
-    <section id="pricing" class="py-24 bg-[#0B0B14] light:bg-slate-100/70 border-b border-brand-border light:border-slate-200">
+    <section id="pricing" class="py-14 sm:py-24 bg-[#0B0B14] light:bg-slate-100/70 border-b border-brand-border light:border-slate-200">
       <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center max-w-3xl mx-auto mb-12">
-          <h2 class="text-xs uppercase tracking-widest font-bold text-brand-400 light:text-brand-600 mb-3" data-i18n="priceSubtitle">TRANSPARENT PLANS</h2>
-          <p class="text-3xl sm:text-4xl font-extrabold font-display" data-i18n="priceTitle">Simple, honest pricing for Alora</p>
-          <p class="text-gray-400 light:text-slate-600 mt-4 text-base" data-i18n="priceDesc">Free forever for essential use, or upgrade to unlock unlimited deep reasoning and document uploads.</p>
+        <div class="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
+          <h2 class="text-xs uppercase tracking-widest font-bold text-brand-400 light:text-brand-600 mb-2 sm:mb-3" data-i18n="priceSubtitle">TRANSPARENT PLANS</h2>
+          <p class="text-2xl sm:text-4xl font-extrabold font-display" data-i18n="priceTitle">Simple, honest pricing for Alora</p>
+          <p class="text-gray-400 light:text-slate-600 mt-2 sm:mt-4 text-xs sm:text-base" data-i18n="priceDesc">Free forever for essential use, or upgrade to unlock unlimited deep reasoning and document uploads.</p>
           
           <!-- BILLING FREQUENCY TOGGLE -->
-          <div class="mt-8 inline-flex items-center gap-3 p-1.5 theme-surface rounded-2xl border border-brand-border light:border-slate-300 shadow-sm">
-            <button id="billMonthly" onclick="setBillingCycle('monthly')" class="px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition text-gray-400 light:text-slate-500">
+          <div class="mt-6 sm:mt-8 inline-flex items-center gap-2 sm:gap-3 p-1 sm:p-1.5 theme-surface rounded-2xl border border-brand-border light:border-slate-300 shadow-sm">
+            <button id="billMonthly" onclick="setBillingCycle('monthly')" class="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-semibold transition text-gray-400 light:text-slate-500">
               Monthly Billing
             </button>
-            <button id="billYearly" onclick="setBillingCycle('yearly')" class="px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-brand-500 text-white shadow-lg flex items-center gap-1.5">
+            <button id="billYearly" onclick="setBillingCycle('yearly')" class="px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-brand-500 text-white shadow-lg flex items-center gap-1.5">
               <span>Annual Billing</span>
-              <span class="bg-emerald-400 text-black text-[10px] font-extrabold px-1.5 py-0.5 rounded-full">Save 33%</span>
+              <span class="bg-emerald-400 text-black text-[9px] sm:text-[10px] font-extrabold px-1.5 py-0.5 rounded-full">Save 33%</span>
             </button>
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-8 items-stretch">
           
           <!-- FREE FOREVER -->
-          <div class="card-glass rounded-3xl p-8 flex flex-col justify-between">
+          <div class="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
             <div>
               <div class="text-gray-400 light:text-slate-500 font-bold text-xs uppercase tracking-wider">Free Tier</div>
-              <h3 class="text-2xl font-extrabold font-display mt-1">Alora Free</h3>
-              <p class="text-xs text-gray-400 light:text-slate-500 mt-2">Essential private AI for everyone. 100% free forever.</p>
+              <h3 class="text-xl sm:text-2xl font-extrabold font-display mt-1">Alora Free</h3>
+              <p class="text-xs text-gray-400 light:text-slate-500 mt-1.5 sm:mt-2">Essential private AI for everyone. 100% free forever.</p>
               
-              <div class="mt-6 mb-8">
-                <div class="text-4xl font-extrabold font-display">$0</div>
+              <div class="mt-5 sm:mt-6 mb-6 sm:mb-8">
+                <div class="text-3xl sm:text-4xl font-extrabold font-display">$0</div>
                 <div class="text-xs text-gray-400 light:text-slate-500 mt-1">Forever free • No credit card required</div>
               </div>
 
-              <ul class="space-y-3.5 text-xs text-gray-300 light:text-slate-600">
+              <ul class="space-y-2.5 sm:space-y-3.5 text-xs text-gray-300 light:text-slate-600">
                 <li class="flex items-center gap-2">✓ <strong>Unlimited</strong> Standard AI Conversations</li>
                 <li class="flex items-center gap-2">✓ <strong>Live Private Web Search</strong></li>
                 <li class="flex items-center gap-2">✓ <strong>Basic Image Generation</strong></li>
@@ -961,33 +1005,33 @@
               </ul>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-brand-border/60 light:border-slate-200">
-              <a href="#demo" class="block w-full text-center py-3 rounded-xl border border-brand-border light:border-slate-300 theme-surface-hover font-bold text-sm transition">
+            <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-brand-border/60 light:border-slate-200">
+              <a href="#demo" class="block w-full text-center py-2.5 sm:py-3 rounded-xl border border-brand-border light:border-slate-300 theme-surface-hover font-bold text-xs sm:text-sm transition">
                 Start Chatting Free
               </a>
             </div>
           </div>
 
           <!-- PRO (FEATURED) -->
-          <div class="card-glass rounded-3xl p-8 flex flex-col justify-between border-2 border-brand-500 relative bg-gradient-to-b from-[#1C1836] to-[#121024] light:from-white light:to-purple-50/50 shadow-2xl">
-            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-brand-500 text-white text-[11px] font-extrabold uppercase tracking-wider shadow">
+          <div class="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between border-2 border-brand-500 relative bg-gradient-to-b from-[#1C1836] to-[#121024] light:from-white light:to-purple-50/50 shadow-2xl">
+            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-0.5 sm:px-4 sm:py-1 rounded-full bg-brand-500 text-white text-[10px] sm:text-[11px] font-extrabold uppercase tracking-wider shadow">
               Most Popular
             </div>
 
             <div>
               <div class="text-brand-400 light:text-brand-600 font-bold text-xs uppercase tracking-wider">Power Intelligence</div>
-              <h3 class="text-2xl font-extrabold font-display mt-1">Alora Pro</h3>
-              <p class="text-xs text-gray-300 light:text-slate-600 mt-2">Maximum reasoning power with unlimited document analysis.</p>
+              <h3 class="text-xl sm:text-2xl font-extrabold font-display mt-1">Alora Pro</h3>
+              <p class="text-xs text-gray-300 light:text-slate-600 mt-1.5 sm:mt-2">Maximum reasoning power with unlimited document analysis.</p>
               
-              <div class="mt-6 mb-8">
+              <div class="mt-5 sm:mt-6 mb-6 sm:mb-8">
                 <div class="flex items-baseline gap-1">
-                  <span id="pricePro" class="text-4xl font-extrabold font-display">$4.99</span>
+                  <span id="pricePro" class="text-3xl sm:text-4xl font-extrabold font-display">$4.99</span>
                   <span class="text-xs text-gray-400 light:text-slate-500">/ month</span>
                 </div>
                 <div class="text-xs text-brand-300 light:text-brand-600 mt-1" id="subPro">Billed annually (৳499/mo equivalent)</div>
               </div>
 
-              <ul class="space-y-3.5 text-xs text-gray-200 light:text-slate-700">
+              <ul class="space-y-2.5 sm:space-y-3.5 text-xs text-gray-200 light:text-slate-700">
                 <li class="flex items-center gap-2 font-semibold">✓ <strong>Deep Thinking Reasoning Models</strong></li>
                 <li class="flex items-center gap-2">✓ <strong>PDF, Code & Data File Analysis</strong></li>
                 <li class="flex items-center gap-2">✓ <strong>High-Resolution AI Images</strong></li>
@@ -996,29 +1040,29 @@
               </ul>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-brand-border/60 light:border-slate-200">
-              <a href="#demo" class="block w-full shimmer-btn py-3.5 rounded-xl text-center text-white font-extrabold text-sm transition shadow-lg">
+            <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-brand-border/60 light:border-slate-200">
+              <a href="#demo" class="block w-full shimmer-btn py-3 sm:py-3.5 rounded-xl text-center text-white font-extrabold text-xs sm:text-sm transition shadow-lg">
                 Get Alora Pro
               </a>
             </div>
           </div>
 
           <!-- MAX / RESEARCH -->
-          <div class="card-glass rounded-3xl p-8 flex flex-col justify-between">
+          <div class="card-glass rounded-2xl sm:rounded-3xl p-5 sm:p-8 flex flex-col justify-between">
             <div>
               <div class="text-gray-400 light:text-slate-500 font-bold text-xs uppercase tracking-wider">Enterprise & Research</div>
-              <h3 class="text-2xl font-extrabold font-display mt-1">Alora Max</h3>
-              <p class="text-xs text-gray-400 light:text-slate-500 mt-2">For developers, research teams, and business vaults.</p>
+              <h3 class="text-xl sm:text-2xl font-extrabold font-display mt-1">Alora Max</h3>
+              <p class="text-xs text-gray-400 light:text-slate-500 mt-1.5 sm:mt-2">For developers, research teams, and business vaults.</p>
               
-              <div class="mt-6 mb-8">
+              <div class="mt-5 sm:mt-6 mb-6 sm:mb-8">
                 <div class="flex items-baseline gap-1">
-                  <span id="priceMax" class="text-4xl font-extrabold font-display">$9.99</span>
+                  <span id="priceMax" class="text-3xl sm:text-4xl font-extrabold font-display">$9.99</span>
                   <span class="text-xs text-gray-400 light:text-slate-500">/ month</span>
                 </div>
                 <div class="text-xs text-gray-400 light:text-slate-500 mt-1" id="subMax">Billed annually (৳999/mo equivalent)</div>
               </div>
 
-              <ul class="space-y-3.5 text-xs text-gray-300 light:text-slate-600">
+              <ul class="space-y-2.5 sm:space-y-3.5 text-xs text-gray-300 light:text-slate-600">
                 <li class="flex items-center gap-2">✓ <strong>Everything in Pro</strong> unlocked</li>
                 <li class="flex items-center gap-2">✓ <strong>Dedicated API Key</strong> access</li>
                 <li class="flex items-center gap-2">✓ <strong>Team Shared Knowledge Base</strong></li>
@@ -1027,8 +1071,8 @@
               </ul>
             </div>
 
-            <div class="mt-8 pt-6 border-t border-brand-border/60 light:border-slate-200">
-              <a href="#demo" class="block w-full text-center py-3 rounded-xl border border-brand-border light:border-slate-300 theme-surface-hover font-bold text-sm transition">
+            <div class="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-brand-border/60 light:border-slate-200">
+              <a href="#demo" class="block w-full text-center py-2.5 sm:py-3 rounded-xl border border-brand-border light:border-slate-300 theme-surface-hover font-bold text-xs sm:text-sm transition">
                 Choose Alora Max
               </a>
             </div>
@@ -1040,68 +1084,68 @@
     </section>
 
     <!-- FREQUENTLY ASKED QUESTIONS (ACCORDION) -->
-    <section id="faq" class="py-24 theme-surface border-b border-brand-border light:border-slate-200">
+    <section id="faq" class="py-14 sm:py-24 theme-surface border-b border-brand-border light:border-slate-200">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        <div class="text-center mb-16">
-          <h2 class="text-xs uppercase tracking-widest font-bold text-brand-400 light:text-brand-600 mb-3" data-i18n="faqSubtitle">TRANSPARENCY & TRUST</h2>
-          <p class="text-3xl sm:text-4xl font-extrabold font-display" data-i18n="faqTitle">Frequently Asked Questions</p>
-          <p class="text-gray-400 light:text-slate-600 mt-4 text-base" data-i18n="faqDesc">Everything you need to know about Alora privacy, models, and security.</p>
+        <div class="text-center mb-10 sm:mb-16">
+          <h2 class="text-xs uppercase tracking-widest font-bold text-brand-400 light:text-brand-600 mb-2 sm:mb-3" data-i18n="faqSubtitle">TRANSPARENCY & TRUST</h2>
+          <p class="text-2xl sm:text-4xl font-extrabold font-display" data-i18n="faqTitle">Frequently Asked Questions</p>
+          <p class="text-gray-400 light:text-slate-600 mt-2 sm:mt-4 text-xs sm:text-base" data-i18n="faqDesc">Everything you need to know about Alora privacy, models, and security.</p>
         </div>
 
-        <div class="space-y-4" id="faqAccordion">
+        <div class="space-y-3 sm:space-y-4" id="faqAccordion">
           
           <!-- Q1 -->
-          <div class="card-glass rounded-2xl overflow-hidden">
-            <button onclick="toggleFaq(1)" class="w-full p-6 text-left flex items-center justify-between font-bold text-base sm:text-lg focus:outline-none">
+          <div class="card-glass rounded-xl sm:rounded-2xl overflow-hidden">
+            <button onclick="toggleFaq(1)" class="w-full p-4 sm:p-6 text-left flex items-center justify-between font-bold text-sm sm:text-lg focus:outline-none">
               <span data-i18n="faqQ1">What is Alora and who created it?</span>
-              <svg id="faqIcon-1" class="w-5 h-5 text-brand-400 light:text-brand-600 transition-transform duration-200 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              <svg id="faqIcon-1" class="w-4 h-4 sm:w-5 sm:h-5 text-brand-400 light:text-brand-600 transition-transform duration-200 rotate-180 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
-            <div id="faqAns-1" class="px-6 pb-6 text-sm text-gray-300 light:text-slate-600 leading-relaxed border-t border-brand-border/40 light:border-slate-200 pt-4" data-i18n="faqA1">
+            <div id="faqAns-1" class="px-4 pb-4 sm:px-6 sm:pb-6 text-xs sm:text-sm text-gray-300 light:text-slate-600 leading-relaxed border-t border-brand-border/40 light:border-slate-200 pt-3 sm:pt-4" data-i18n="faqA1">
               Alora is the flagship sovereign AI product developed by Alokpoth (আলোকপথ). It was built to solve the critical privacy flaws of Big Tech AI (such as ChatGPT and Google Gemini) by providing state-of-the-art multi-model intelligence without harvesting user prompts or training public models on private conversations.
             </div>
           </div>
 
           <!-- Q2 -->
-          <div class="card-glass rounded-2xl overflow-hidden">
-            <button onclick="toggleFaq(2)" class="w-full p-6 text-left flex items-center justify-between font-bold text-base sm:text-lg focus:outline-none">
+          <div class="card-glass rounded-xl sm:rounded-2xl overflow-hidden">
+            <button onclick="toggleFaq(2)" class="w-full p-4 sm:p-6 text-left flex items-center justify-between font-bold text-sm sm:text-lg focus:outline-none">
               <span data-i18n="faqQ2">Does Alora train AI models on my chats or uploaded files?</span>
-              <svg id="faqIcon-2" class="w-5 h-5 text-brand-400 light:text-brand-600 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              <svg id="faqIcon-2" class="w-4 h-4 sm:w-5 sm:h-5 text-brand-400 light:text-brand-600 transition-transform duration-200 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
-            <div id="faqAns-2" class="hidden px-6 pb-6 text-sm text-gray-300 light:text-slate-600 leading-relaxed border-t border-brand-border/40 light:border-slate-200 pt-4" data-i18n="faqA2">
+            <div id="faqAns-2" class="hidden px-4 pb-4 sm:px-6 sm:pb-6 text-xs sm:text-sm text-gray-300 light:text-slate-600 leading-relaxed border-t border-brand-border/40 light:border-slate-200 pt-3 sm:pt-4" data-i18n="faqA2">
               No, never. Alora adheres to a strict Zero-Retention Privacy by Default protocol. Your prompts, code snippets, uploaded PDF contracts, and responses are discarded immediately after processing and are never retained for model retraining.
             </div>
           </div>
 
           <!-- Q3 -->
-          <div class="card-glass rounded-2xl overflow-hidden">
-            <button onclick="toggleFaq(3)" class="w-full p-6 text-left flex items-center justify-between font-bold text-base sm:text-lg focus:outline-none">
+          <div class="card-glass rounded-xl sm:rounded-2xl overflow-hidden">
+            <button onclick="toggleFaq(3)" class="w-full p-4 sm:p-6 text-left flex items-center justify-between font-bold text-sm sm:text-lg focus:outline-none">
               <span data-i18n="faqQ3">How do I install the Alora Android APK?</span>
-              <svg id="faqIcon-3" class="w-5 h-5 text-brand-400 light:text-brand-600 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              <svg id="faqIcon-3" class="w-4 h-4 sm:w-5 sm:h-5 text-brand-400 light:text-brand-600 transition-transform duration-200 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
-            <div id="faqAns-3" class="hidden px-6 pb-6 text-sm text-gray-300 light:text-slate-600 leading-relaxed border-t border-brand-border/40 light:border-slate-200 pt-4" data-i18n="faqA3">
+            <div id="faqAns-3" class="hidden px-4 pb-4 sm:px-6 sm:pb-6 text-xs sm:text-sm text-gray-300 light:text-slate-600 leading-relaxed border-t border-brand-border/40 light:border-slate-200 pt-3 sm:pt-4" data-i18n="faqA3">
               Simply click the "Download Alora.apk" button on this website. Once downloaded on your Android device, tap the file to install. If prompted, enable "Install unknown apps" in your browser settings. The app is lightweight (9.4 MB) and completely virus-free.
             </div>
           </div>
 
           <!-- Q4 -->
-          <div class="card-glass rounded-2xl overflow-hidden">
-            <button onclick="toggleFaq(4)" class="w-full p-6 text-left flex items-center justify-between font-bold text-base sm:text-lg focus:outline-none">
+          <div class="card-glass rounded-xl sm:rounded-2xl overflow-hidden">
+            <button onclick="toggleFaq(4)" class="w-full p-4 sm:p-6 text-left flex items-center justify-between font-bold text-sm sm:text-lg focus:outline-none">
               <span data-i18n="faqQ4">Is Alora really free to use?</span>
-              <svg id="faqIcon-4" class="w-5 h-5 text-brand-400 light:text-brand-600 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              <svg id="faqIcon-4" class="w-4 h-4 sm:w-5 sm:h-5 text-brand-400 light:text-brand-600 transition-transform duration-200 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
-            <div id="faqAns-4" class="hidden px-6 pb-6 text-sm text-gray-300 light:text-slate-600 leading-relaxed border-t border-brand-border/40 light:border-slate-200 pt-4" data-i18n="faqA4">
+            <div id="faqAns-4" class="hidden px-4 pb-4 sm:px-6 sm:pb-6 text-xs sm:text-sm text-gray-300 light:text-slate-600 leading-relaxed border-t border-brand-border/40 light:border-slate-200 pt-3 sm:pt-4" data-i18n="faqA4">
               Yes. Alora offers a permanently free tier that lets you chat, perform live private web searches, and generate images. If you need advanced deep-thinking models or high-volume PDF analysis, you can upgrade to Alora Pro.
             </div>
           </div>
 
           <!-- Q5 -->
-          <div class="card-glass rounded-2xl overflow-hidden">
-            <button onclick="toggleFaq(5)" class="w-full p-6 text-left flex items-center justify-between font-bold text-base sm:text-lg focus:outline-none">
+          <div class="card-glass rounded-xl sm:rounded-2xl overflow-hidden">
+            <button onclick="toggleFaq(5)" class="w-full p-4 sm:p-6 text-left flex items-center justify-between font-bold text-sm sm:text-lg focus:outline-none">
               <span data-i18n="faqQ5">Can Alora understand Bengali and English fluently?</span>
-              <svg id="faqIcon-5" class="w-5 h-5 text-brand-400 light:text-brand-600 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              <svg id="faqIcon-5" class="w-4 h-4 sm:w-5 sm:h-5 text-brand-400 light:text-brand-600 transition-transform duration-200 shrink-0 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
-            <div id="faqAns-5" class="hidden px-6 pb-6 text-sm text-gray-300 light:text-slate-600 leading-relaxed border-t border-brand-border/40 light:border-slate-200 pt-4" data-i18n="faqA5">
+            <div id="faqAns-5" class="hidden px-4 pb-4 sm:px-6 sm:pb-6 text-xs sm:text-sm text-gray-300 light:text-slate-600 leading-relaxed border-t border-brand-border/40 light:border-slate-200 pt-3 sm:pt-4" data-i18n="faqA5">
               Yes! Alora is natively optimized for both English and Bengali (বাংলা), understanding regional cultural nuances, local historical context, and formal literature flawlessly.
             </div>
           </div>
@@ -1112,39 +1156,52 @@
     </section>
 
     <!-- FINAL CALL TO ACTION SECTION -->
-    <section class="py-24 bg-gradient-to-b from-[#0B0B14] to-[#151226] light:from-slate-100 light:to-slate-200 border-b border-brand-border light:border-slate-200 text-center relative overflow-hidden">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-8">
+    <section class="py-14 sm:py-24 bg-gradient-to-b from-[#0B0B14] to-[#151226] light:from-slate-100 light:to-slate-200 border-b border-brand-border light:border-slate-200 text-center relative overflow-hidden">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 space-y-6 sm:space-y-8">
         
         <!-- DYNAMIC LOGO EMBLEM -->
-        <img id="ctaLogo" src="assets/logo-icon-dark.png" alt="Alokpoth Emblem" class="w-16 h-16 mx-auto object-contain" width="64" height="64">
+        <img id="ctaLogo" src="assets/logo-icon-dark.png" alt="Alokpoth Emblem" class="w-12 h-12 sm:w-16 sm:h-16 mx-auto object-contain" width="64" height="64">
 
-        <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight font-display" data-i18n="ctaTitle">
+        <h2 class="text-2xl sm:text-5xl font-extrabold tracking-tight font-display px-2" data-i18n="ctaTitle">
           Experience private AI without surveillance.
         </h2>
         
-        <p class="text-lg text-gray-300 light:text-slate-700 max-w-2xl mx-auto" data-i18n="ctaSubtitle">
+        <p class="text-sm sm:text-lg text-gray-300 light:text-slate-700 max-w-2xl mx-auto px-2" data-i18n="ctaSubtitle">
           Join thousands of creators, researchers, and developers using Alora for sovereign digital productivity.
         </p>
 
-        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a href="#demo" class="shimmer-btn px-10 py-4 rounded-2xl text-base font-bold text-white shadow-2xl flex items-center gap-2">
+        <div class="pt-2 sm:pt-4 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 max-w-sm sm:max-w-none mx-auto w-full px-2">
+          <a href="#demo" class="w-full sm:w-auto shimmer-btn px-8 sm:px-10 py-3.5 sm:py-4 rounded-2xl text-sm sm:text-base font-bold text-white shadow-2xl flex items-center justify-center gap-2">
             <span data-i18n="btnStartAlora">Start Chatting with Alora</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
           </a>
-          <a href="downloads/Alora.apk" download="Alora.apk" class="card-glass px-8 py-4 rounded-2xl text-base font-bold flex items-center gap-2 transition hover:border-brand-500">
+          <a href="downloads/Alora.apk" download="Alora.apk" class="w-full sm:w-auto card-glass px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl text-sm sm:text-base font-bold flex items-center justify-center gap-2 transition hover:border-brand-500">
             <span>📥 Download APK (9.4MB)</span>
           </a>
         </div>
 
-        <div class="text-xs text-gray-400 light:text-slate-500 font-medium pt-2">
+        <div class="text-[11px] sm:text-xs text-gray-400 light:text-slate-500 font-medium pt-2">
           No personal phone number required • Free forever
         </div>
       </div>
     </section>
   </main>
 
+  <!-- STICKY MOBILE QUICK ACTION BAR (COMFORT FOR MOBILE USERS) -->
+  <aside aria-label="Quick Actions" class="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#0B0B14]/95 dark:bg-[#0B0B14]/95 light:bg-white/95 backdrop-blur-xl border-t border-brand-border/80 light:border-slate-200 px-3 py-2.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] shadow-2xl flex items-center justify-between gap-2.5">
+    <a href="#demo" class="flex-1 py-2.5 px-3 rounded-xl card-glass border border-brand-border light:border-slate-300 text-center font-bold text-xs text-gray-200 light:text-slate-800 flex items-center justify-center gap-1.5 transition active:scale-95">
+      <span>💬</span>
+      <span data-i18n="barDemo">Live Demo</span>
+    </a>
+    <a href="downloads/Alora.apk" download="Alora.apk" class="flex-1 py-2.5 px-3 rounded-xl shimmer-btn text-center font-bold text-xs text-white flex items-center justify-center gap-1.5 shadow-lg active:scale-95">
+      <svg class="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+      <span data-i18n="barDownload">Download APK</span>
+      <span class="text-[9px] bg-white/20 px-1 py-0.2 rounded font-extrabold">9.4MB</span>
+    </a>
+  </aside>
+
   <!-- RICH FOOTER (PROTON STYLE: ALOKPOTH FOUNDATION & ALORA AI) -->
-  <footer class="bg-[#08070E] light:bg-slate-900 border-t border-brand-border/80 light:border-slate-800 pt-16 pb-12 text-sm text-gray-400">
+  <footer class="bg-[#08070E] light:bg-slate-900 border-t border-brand-border/80 light:border-slate-800 pt-12 sm:pt-16 pb-28 sm:pb-12 text-sm text-gray-400">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
       <div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
@@ -1266,7 +1323,10 @@
         ctaTitle: "Experience private AI without surveillance.",
         ctaSubtitle: "Join thousands of creators, researchers, and developers using Alora for sovereign digital productivity.",
         btnStartAlora: "Start Chatting with Alora",
-        footerBrandText: "Alokpoth (আলোকপথ) develops Alora—a privacy-by-default, sovereign AI platform providing intelligent reasoning without compromising user data rights."
+        footerBrandText: "Alokpoth (আলোকপথ) develops Alora—a privacy-by-default, sovereign AI platform providing intelligent reasoning without compromising user data rights.",
+        barDemo: "Live Demo",
+        barDownload: "Download APK",
+        swipeHint: "👈 Swipe horizontally to compare 👉"
       },
       bn: {
         announcement: "আলোরা অ্যান্ড্রয়েড নেটিভ অ্যাপ v1.2.1 সরাসরি APK ডাউনলোডের জন্য উন্মুক্ত!",
@@ -1326,7 +1386,10 @@
         ctaTitle: "নজরদারিহীন নিরাপদ এআই ব্যবহার শুরু করুন।",
         ctaSubtitle: "হাজারো সৃজনশীল মানুষ, গবেষক ও নির্মাতার সাথে আলোরার ডিজিটাল স্বাধীনতার অংশ হোন।",
         btnStartAlora: "আলোরার সাথে কথা বলুন",
-        footerBrandText: "আলোকপথ (Alokpoth) তৈরি করেছে আলোরা—একটি ডিফল্ট গোপনীয়তাসম্পন্ন এআই প্ল্যাটফর্ম।"
+        footerBrandText: "আলোকপথ (Alokpoth) তৈরি করেছে আলোরা—একটি ডিফল্ট গোপনীয়তাসম্পন্ন এআই প্ল্যাটফর্ম।",
+        barDemo: "লাইভ ডেমো",
+        barDownload: "APK ডাউনলোড",
+        swipeHint: "👈 ডানে-বামে সোয়াইপ করে তুলনা দেখুন 👉"
       }
     };
 
