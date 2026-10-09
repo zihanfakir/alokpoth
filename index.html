@@ -333,11 +333,7 @@
       color: inherit;
     }
 
-    /* Scroll Progress & Reveal Animations (60/120fps GPU accelerated) */
-    #scrollProgressBar {
-      transform-origin: 0% 50%;
-      will-change: transform;
-    }
+    /* Reveal Animations (60/120fps GPU accelerated) */
 
     .scroll-reveal {
       opacity: 0;
@@ -502,9 +498,6 @@
   </script>
 </head>
 <body class="smooth-transition antialiased select-none font-sans">
-
-  <!-- TOP SCROLL PROGRESS INDICATOR (NEON GRADIENT GLOW) -->
-  <div id="scrollProgressBar" class="fixed top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-brand-500 via-sky-400 to-fuchsia-500 z-[100] origin-left scale-x-0 pointer-events-none shadow-[0_0_12px_rgba(109,74,255,0.85)]" aria-hidden="true"></div>
 
   <!-- TOP ANNOUNCEMENT BANNER (COMPACT & RESPONSIVE ON MOBILE) -->
   <aside aria-label="Announcement" class="bg-gradient-to-r from-brand-900 via-brand-700 to-brand-900 py-1.5 px-3 text-center text-xs text-brand-100 font-medium border-b border-brand-600/30 flex items-center justify-center gap-1.5 sm:gap-2 flex-wrap">
@@ -1868,7 +1861,6 @@ print("Encrypted byte size:", len(ciphertext))</pre>
 
     // SCROLL ANIMATIONS ENGINE (GPU ACCELERATED 60/120FPS)
     function initScrollAnimations() {
-      const progressBar = document.getElementById('scrollProgressBar');
       const backToTopBtn = document.getElementById('backToTopBtn');
       const navLinks = document.querySelectorAll('.nav-link');
       const sections = ['demo', 'features', 'comparison', 'download', 'pricing', 'faq'];
@@ -1912,13 +1904,7 @@ print("Encrypted byte size:", len(ciphertext))</pre>
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
             const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
-            // 1. Progress Bar (Hardware scaleX)
-            if (progressBar) {
-              const progress = docHeight > 0 ? (scrollTop / docHeight) : 0;
-              progressBar.style.transform = `scaleX(${progress})`;
-            }
-
-            // 2. Back To Top Button
+            // 1. Back To Top Button
             if (backToTopBtn) {
               if (scrollTop > 380) {
                 backToTopBtn.classList.remove('opacity-0', 'translate-y-6', 'pointer-events-none');
