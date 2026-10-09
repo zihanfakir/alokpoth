@@ -333,6 +333,17 @@
       color: inherit;
     }
 
+    #brandLogoLink,
+    #brandLogoLink:focus,
+    #brandLogoLink:focus-visible,
+    #brandLogoLink:active,
+    #brandLogoLink:hover {
+      outline: none !important;
+      box-shadow: none !important;
+      border: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+    }
+
     /* Reveal Animations (60/120fps GPU accelerated) */
 
     .scroll-reveal {
@@ -512,7 +523,7 @@
     <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between">
       
       <!-- LOGO (ALOKPOTH ONLY) -->
-      <a href="/" id="brandLogoLink" class="flex items-center group focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-lg p-1 shrink-0" aria-label="Alokpoth Home">
+      <a href="/" id="brandLogoLink" class="flex items-center group outline-none focus:outline-none focus:ring-0 focus-visible:outline-none border-0 select-none shrink-0" aria-label="Alokpoth Home">
         <img id="navLogo" src="assets/logo-full-dark.png" alt="Alokpoth Logo" class="h-6 sm:h-8 md:h-9 w-auto object-contain transition-transform group-hover:scale-105" width="160" height="36">
       </a>
 
@@ -2018,6 +2029,7 @@ print("Encrypted byte size:", len(ciphertext))</pre>
         // Logo or Home / Top link
         if (href === '#' || href === '/' || anchor.id === 'brandLogoLink') {
           e.preventDefault();
+          if (anchor.blur) anchor.blur();
           window.scrollTo({ top: 0, behavior: 'smooth' });
           history.replaceState(null, document.title, window.location.pathname);
           return;
