@@ -1,8 +1,7 @@
 # Alokpoth (আলোকপথ) — Alora AI
 
 > **Privacy by default Sovereign AI Assistant**  
-> Live at [https://alokpoth.zihan.uk](https://alokpoth.zihan.uk)
-
+> Live at [https://alokpoth.zihan.xyz](https://alokpoth.zihan.xyz)
 ---
 
 ## 🌟 Overview
@@ -25,7 +24,7 @@
 
 - **Android Native APK**: Direct download [downloads/Alora.apk](downloads/Alora.apk) (v1.2.1, 9.4 MB)
 - **iOS Application**: [downloads/Alora.ipa](downloads/Alora.ipa) & Safari Progressive Web App
-- **Live Web App**: [https://alokpoth.zihan.uk](https://alokpoth.zihan.uk)
+- **Live Web App**: [https://alokpoth.zihan.xyz](https://alokpoth.zihan.xyz)
 
 ---
 
